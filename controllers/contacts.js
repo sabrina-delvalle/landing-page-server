@@ -43,7 +43,7 @@ const sendEmail = async (req, res) => {
 
     emailResponse();
 
-    res.json(JSON.stringify(contact));
+    res.json(contact);
 }
 
 module.exports = {
