@@ -25,7 +25,7 @@ const sendEmail = async (req, res) => {
     let saveUser = await contact.save();
     console.log(`User stored in the DB ${contact}`);
 
-    const emailResponse = async () => {
+    const emailResponseUser = async () => {
       // send mail with defined transport object
       try{
         const info = await transporter.sendMail({
@@ -33,7 +33,7 @@ const sendEmail = async (req, res) => {
           to: req.body.email, // list of receivers
           subject: "Confirmation Email", // Subject line
           text: "Confirmation Email", // plain text body
-          html: `<h2 style='color:rgb(72, 70, 70)'>Sabrina del Valle</h2> <span style='display:inline-block'>Web developer</span> <br /> <p style='color:grey'>Hello ${req.body.name}, thanks for your interest, I will reply soon. Best Regards! </p>`, // html body
+          html: `<h2 style='color:rgb(72, 70, 70)'>Sabrina del Valle</h2> <span style='display:inline-block'>Web developer</span> <br /> <p style='color:grey'>Hello ${req.body.name}, thanks for your interest, I will reply soon. Best Regards! </p> <a href="https://github.com/sabrina-delvalle"> GitHub </a> <br /> <a href="https://www.linkedin.com/in/sabrinadelvalle/"> LinkedIn </a>`, // html body
         })
       }catch(err){
         res.send(err)
@@ -41,7 +41,24 @@ const sendEmail = async (req, res) => {
       
     }
 
-    emailResponse();
+    const emailResponsePersonal = async () => {
+      // send mail with defined transport object
+      try{
+        const info = await transporter.sendMail({
+          from: '"Sabrina del Valle" <is.sabrinadelvalle@gmail.com>', // sender address
+          to: 'is.sabrinadelvalle@gmail.com',
+          subject: "Interested in Portfolio", // Subject line
+          text: "Interested in Porfolio", // plain text body
+          html: `<p> Message from <strong>${req.body.name}</strong>, message: ${req.body.message} </p><br /> <p>email: ${req.body.email}</p>`, // html body
+        })
+      }catch(err){
+        res.send(err)
+      }
+      
+    }
+
+    emailResponseUser();
+    emailResponsePersonal();
 
     res.json(contact);
 }
